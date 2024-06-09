@@ -1,0 +1,56 @@
+version: '3.1'
+
+services:
+  auth_service:
+    build:
+      context: ../reg
+      dockerfile: Dockerfile
+    image: auth_service_image
+    container_name: auth_service_container
+    expose:
+      - "8000"
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      - auth
+      - main
+    environment:
+      - DB_URL=jdbc:postgresql://main/postgres
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - JWT_EXPIRATION=3600000
+      - JWT_SECRET=secretLoremIpsumDollarTextYosecretLoremIpsumDollarTextYo
+  order_service:
+    build:
+      context: ../tickets
+      dockerfile: Dockerfile
+    image: order_service_image
+    container_name: order_service_container
+    expose:
+      - "8080"
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - auth
+      - main
+    environment:
+      - DB_REG_PASSWORD=password
+      - DB_REG_URL=jdbc:postgresql://auth/postgres
+      - DB_REG_USER=user
+      - DB_URL=jdbc:postgresql://main/postgres
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - JWT_EXPIRATION=3600000
+      - JWT_SECRET=secretLoremIpsumDollarTextYosecretLoremIpsumDollarTextYo
+  auth:
+    image: 'postgres'
+    container_name: auth
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+  main:
+    image: 'postgres'
+    container_name: main
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password

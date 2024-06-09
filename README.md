@@ -10,6 +10,7 @@ http://localhost:8080/swagger-ui.html
 Чтобы запустить нужно соответственно 
 
 cd project/docker
+
 docker-compose up
 
 И всё!

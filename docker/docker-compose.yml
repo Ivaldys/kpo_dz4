@@ -15,7 +15,7 @@ services:
       - auth
       - main
     environment:
-      - DB_URL=jdbc:postgresql://main/postgres
+      - DB_URL=jdbc:postgresql://auth/postgres
       - DB_USER=user
       - DB_PASSWORD=password
       - JWT_EXPIRATION=3600000
